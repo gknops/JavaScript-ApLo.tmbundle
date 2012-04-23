@@ -7,9 +7,16 @@
 	<key>contactName</key>
 	<string>Gerd Knops</string>
 	<key>description</key>
-	<string>JavaScript bundle additions using ApLo:
+	<string># JavaScript bundle additions using ApLo:
 
-- Syntax Checker using JSLint: https://github.com/douglascrockford/JSLint
+## Syntax Checker using JSLint: https://github.com/douglascrockford/JSLint
+
+Use `APLO_JSLINT_OPTIONS` in a .tm_properties file to set the options for JSLint. Example (the default):
+
+	APLO_JSLINT_OPTIONS="devel: true, browser: true, white: true, onevar: true, undef: true, newcap: true, nomen: true, regexp: true, plusplus: true, bitwise: true, maxerr: 50, indent: 4"
+
+See &lt;http://www.JSLint.com/lint.html#options&gt; for available options.
+
 </string>
 	<key>name</key>
 	<string>JavaScript(ApLo)</string>

@@ -60,11 +60,13 @@
 	$file=~s/.*\///;
 	
 	printElement("Checking $file",'headLine','div');
-	printElement(htmlEscape($safePath));
+	
+	my $o=$ENV{APLO_JSLINT_OPTIONS} // '';
+	my $opts=qq[jsLintOptions={$o};\n];
 	
 	our $errCount=0;
 	
-	open(IN,"'$ENV{APLO_JSC}' '$ENV{APLO_JSLINT}' '$ENV{APLO_JSC_WRAPPER}' -- \"`cat '$path'`\" 2>&1 |")
+	open(IN,"'$ENV{APLO_JSC}' '$ENV{APLO_JSLINT}' '$ENV{APLO_JSC_WRAPPER}' -- \"`cat '$path'`\" \"$opts\" 2>&1 |")
 		or die("Can't open for read: $!\n");
 	while(<IN>)
 	{
@@ -80,7 +82,7 @@
 		}
 		elsif(/^Syntax OK/)
 		{
-			continue;
+			next;
 		}
 		else
 		{

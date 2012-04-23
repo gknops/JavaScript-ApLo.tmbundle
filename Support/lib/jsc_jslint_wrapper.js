@@ -6,8 +6,9 @@ This script is just a wrapper around Douglas Crockfords jslint, intended to be i
 The script is depending on jslint, which means jslint has to be loaded before this script.
 
 */
-/*global JSLINT, print, quit, arguments */	
-(function(source) {
+/*global JSLINT, print, quit, arguments */
+
+(function(source,optionsString) {
 	if(typeof JSLINT === 'undefined')
 	{
 		print('ERROR: JSLINT does not appear to be properly loaded.');
@@ -20,23 +21,11 @@ The script is depending on jslint, which means jslint has to be loaded before th
 		quit();
 	}
 	
-	var 
-		// Options from www.jslint.com when using "The good parts" 
-		goodPartsOptions={
-			devel: true,
-			browser: true,
-			white: true,
-			onevar: true,
-			undef: true,
-			newcap: true,
-			nomen: true,
-			regexp: true,
-			plusplus: true,
-			bitwise: true,
-			maxerr: 50,
-			indent: 4
-		},					
-	    result=JSLINT(source,goodPartsOptions);
+	var jsLintOptions={};
+	
+	eval(optionsString);
+	
+	var result=JSLINT(source,jsLintOptions);
 	
 	if(result)
 	{
@@ -53,9 +42,9 @@ The script is depending on jslint, which means jslint has to be loaded before th
 			var error=errors[i];
 			if(error)
 			{
-				print(' '+error.line+':'+error.character+': '+error.reason);
+				print(''+error.line+':'+error.character+': '+error.reason);
 			}
 		}
 	}
 	quit();
-}(arguments[0]));
+}(arguments[0],arguments[1]));
