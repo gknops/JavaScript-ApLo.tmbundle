@@ -1,0 +1,19 @@
+# Introduction
+
+`JavaScrip(ApLo).tmbundle` provides support for [JSLint](https://github.com/douglascrockford/JSLint). It requires [`ApLo.tmbundle`](https://github.com/gknops/aplo.tmbundle).
+
+By default it is tied to `⌘S` and the `source.js` scope, so it will check any JavaScript file on save.
+
+
+
+# .tm_properties variables
+
+You can control some functions of this plugin by defining variables in a `.tm_properties` file, either in your home directory, the project directory or anywhere else `.tm_properties` files are allowed at.
+
+
+## APLO\_JSLINT\_OPTIONS
+
+Sets the options used when JSLint runs. See <http://www.JSLint.com/lint.html#options> for available options. The default is
+
+	APLO_JSLINT_OPTIONS="devel: true, browser: true, white: true, onevar: true, undef: true, newcap: true, nomen: true, regexp: true, plusplus: true, bitwise: true, maxerr: 50, indent: 4"
+

@@ -66,8 +66,6 @@ APLO_JSLINT_DEFAULT_OPTIONS="devel: true, browser: true, white: true, onevar: tr
 
 APLO_JSLINT_OPTIONS=${APLO_JSLINT_OPTIONS:-"$APLO_JSLINT_DEFAULT_OPTIONS"}
 
-APLO_LUA_SCRIPT=${APLO_LUA_SCRIPT:-"$TM_FILEPATH"}
-
 APLO_JSLINT=$TM_BUNDLE_SUPPORT/JSLint/jslint.js
 APLO_JSC_WRAPPER=$TM_BUNDLE_SUPPORT/lib/jsc_jslint_wrapper.js
 APLO_JSC=/System/Library/Frameworks/JavaScriptCore.framework/Versions/A/Resources/jsc
