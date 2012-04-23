@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>beforeRunningCommand</key>
+	<string>saveActiveFile</string>
+	<key>command</key>
+	<string>#!/usr/bin/env bash
+[[ -f "${TM_SUPPORT_PATH}/lib/bash_init.sh" ]] &amp;&amp; . "${TM_SUPPORT_PATH}/lib/bash_init.sh"
+
+# Dependencies
+# Set paths appropriately to the 'core' jslint javascript file
+# and to the jslint wrapper script
+#
+APLO_JSLINT=$TM_BUNDLE_SUPPORT/JSLint/jslint.js
+APLO_JSC_WRAPPER=$TM_BUNDLE_SUPPORT/lib/jsc_jslint_wrapper.js
+APLO_JSC=/System/Library/Frameworks/JavaScriptCore.framework/Versions/A/Resources/jsc
+
+APLO_WINDOW_NAME="JavaScript Syntax Check"
+APLO_PARSER_PATH=$TM_BUNDLE_SUPPORT/bin/javaScriptSyntaxCheck
+APLO_DELETE_FILE=1
+
+PATH=/usr/local/bin:$PATH
+
+export APLO_JSLINT APLO_JSC_WRAPPER APLO_JSC APLO_WINDOW_NAME APLO_PARSER_PATH APLO_DELETE_FILE
+
+aploPath=/tmp/aplo$$.aplo
+
+env&gt;$aploPath
+echo $aploPath
+open $aploPath
+</string>
+	<key>input</key>
+	<string>none</string>
+	<key>inputFormat</key>
+	<string>text</string>
+	<key>keyEquivalent</key>
+	<string>@s</string>
+	<key>name</key>
+	<string>SyntaxCheck</string>
+	<key>outputCaret</key>
+	<string>afterOutput</string>
+	<key>outputFormat</key>
+	<string>text</string>
+	<key>outputLocation</key>
+	<string>toolTip</string>
+	<key>scope</key>
+	<string>source.js</string>
+	<key>uuid</key>
+	<string>8C60C84F-CB22-419E-8797-8E5E01D887D7</string>
+	<key>version</key>
+	<integer>2</integer>
+</dict>
+</plist>

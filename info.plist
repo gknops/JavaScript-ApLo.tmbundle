@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>contactEmailRot13</key>
+	<string>tregv-tvguho@ovgneg.pbz</string>
+	<key>contactName</key>
+	<string>Gerd Knops</string>
+	<key>description</key>
+	<string>JavaScript bundle additions using ApLo:
+
+- Syntax Checker using JSLint: https://github.com/douglascrockford/JSLint
+</string>
+	<key>name</key>
+	<string>JavaScript(ApLo)</string>
+	<key>uuid</key>
+	<string>004DD479-8C77-4810-8360-D8B3EDD5D763</string>
+</dict>
+</plist>

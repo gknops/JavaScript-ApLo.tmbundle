@@ -1,0 +1,194 @@
+#!/usr/bin/perl -w
+###############################################################################
+#	Copyright 2012 BITart Gerd Knops,  All rights reserved.
+#
+#	Project	: TextMate JavaScript(ApLo) bundle
+#	File	: javaScriptSyntaxCheck
+#	Author	: Gerd Knops gerti@BITart.com
+#
+###############################################################################
+#
+#	History:
+#	120423 Creation of file
+#
+###############################################################################
+#
+#	Description:
+#	JavaScript Syntax Checker using APLO and JSLint
+#
+###############################################################################
+#
+# DISCLAIMER
+#
+# BITart and Gerd Knops make no warranties, representations or commitments
+# with regard to the contents of this software. BITart and Gerd Knops
+# specifically disclaim any and all warranties, whether express, implied or
+# statutory, including, but not limited to, any warranty of merchantability
+# or fitness for a particular purpose, and non-infringement. Under no
+# circumstances will BITart or Gerd Knops be liable for loss of data,
+# special, incidental or consequential damages out of the use of this
+# software, even if those damages were foreseeable, or BITart or Gerd Knops
+# was informed of their potential.
+#
+###############################################################################
+# Configuration
+###############################################################################
+	
+	use strict;
+    use feature "switch";
+	
+	$|=1;
+	
+
+###############################################################################
+# Main
+###############################################################################
+	
+	if(scalar(@ARGV)==1)
+	{
+		given($ARGV[0])
+		{
+			when ('-js') { printJavascript(); exit(0); }
+			when ('-css') { printCSS(); exit(0); }
+		}
+	}
+	
+	our $path=$ENV{TM_FILEPATH};
+	my $safePath=percentEscape($path);
+	
+	my $file=$safePath;
+	$file=~s/.*\///;
+	
+	printElement("Checking $file",'headLine','div');
+	printElement(htmlEscape($safePath));
+	
+	our $errCount=0;
+	
+	open(IN,"'$ENV{APLO_JSC}' '$ENV{APLO_JSLINT}' '$ENV{APLO_JSC_WRAPPER}' -- \"`cat '$path'`\" 2>&1 |")
+		or die("Can't open for read: $!\n");
+	while(<IN>)
+	{
+		if(s/^(\d+):(\d+)://)
+		{
+			my $line=$1;
+			my $column=$2;
+			my $txt=htmlEscape($_);
+			
+			my $s=qq{<a href="txmt://open?url=file://$safePath&line=$line&column=$column">$file:$line:</a> <span class="issue">$txt</span>};
+			
+			printElement($s);
+		}
+		elsif(/^Syntax OK/)
+		{
+			continue;
+		}
+		else
+		{
+			printElement(htmlEscape($_),'unknown');
+		}
+		$errCount++;
+	}
+	close(IN);
+	
+	printElement('');
+	
+	if($errCount>0)
+	{
+		printElement("$errCount issues detected",'errorResult');
+		playSound($ENV{TM_ERROR_SOUND});
+		exit(1);
+	}
+	
+	printElement('Syntax OK','okResult');
+	playSound($ENV{TM_SUCCESS_SOUND});
+
+###############################################################################
+# Subroutines
+###############################################################################
+sub printElement {
+	
+	my $span=shift;
+	my $classes=shift // '';
+	my $element=shift // 'span';
+	
+	$classes=qq{ class="$classes"} if($classes ne '');
+	
+	print qq{<$element$classes>$span</$element><br />\n};
+}
+
+###############################################################################
+# Utility functions
+###############################################################################
+sub playSound {
+	
+	my $sf=shift;
+	
+	return unless($sf);
+	
+	unless(index($sf,'/')==0)
+	{
+		$sf="/System/Library/Sounds/$sf.aiff";
+	}
+	
+	if(-r $sf)
+	{
+		system("/usr/bin/afplay '$sf' 2>/dev/null");
+	}
+	else
+	{
+		warn("playSound: '$sf' not found!<br />\n");
+	}
+}
+sub percentEscape {
+	
+	my $s=shift;
+	
+	# $s=~s/([^a-zA-Z0-9_\-.\/])/uc sprintf("%%%02x",ord($1))/eg;
+	$s=~s/(\s|[]\!\*\'\(\)\;\:\@\&\=\+\$\,\?\#\[\]])/uc sprintf("%%%02x",ord($1))/eg;
+	
+	$s;
+}
+sub htmlEscape {
+	
+	my $s=shift;
+	
+	$s=~s/</\&lt;/g;
+	$s=~s/>/\&gt;/g;
+	
+	$s;
+}
+
+###############################################################################
+# Javascript & CSS
+###############################################################################
+sub printJavascript {
+	
+	print <<'JAVASCRIPT';
+JAVASCRIPT
+}
+sub printCSS {
+	
+	print <<'CSS';
+.headLine {
+	font-family: Helvetica;
+    font-size: 130%;
+    font-weight: bold;
+	padding-bottom: 5px;
+	border-bottom: 1px solid black;
+}
+.issue {
+}
+.unknown {
+	color: GoldenRod;
+}
+.okResult {
+	color: green;
+}
+.errorResult {
+	color: red;
+}
+CSS
+};
+
+1;
+############################################################################EOF
