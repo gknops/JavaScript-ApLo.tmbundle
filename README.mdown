@@ -4,8 +4,12 @@
 
 By default it is tied to `⌘S` and the `source.js` scope, so it will check any JavaScript file on save.
 
+**NOTE**: this bundle does NOT replace the standard JavaScript bundle, you still need that for the language definition etc.
 
-**NOTE:** to install, open a terminal window and enter these commands:
+
+# Installation
+
+Open a terminal window and enter these commands:
 
 	cd ~/Library/Application\ Support/Avian/Bundles
 	git clone --recursive git://github.com/gknops/JavaScript-ApLo.tmbundle.git
