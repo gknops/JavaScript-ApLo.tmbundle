@@ -1,6 +1,6 @@
 # Introduction
 
-`JavaScrip(ApLo).tmbundle` provides support for [JSLint](https://github.com/douglascrockford/JSLint). It requires [`ApLo.tmbundle`](https://github.com/gknops/aplo.tmbundle).
+`JavaScript-ApLoAdditions.tmbundle` provides support for [JSLint](https://github.com/douglascrockford/JSLint). It requires [`ApLo.tmbundle`](https://github.com/gknops/aplo.tmbundle).
 
 By default it is tied to `⌘S` and the `source.js` scope, so it will check any JavaScript file on save.
 
