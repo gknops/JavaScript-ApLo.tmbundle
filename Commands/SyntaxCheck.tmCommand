@@ -72,7 +72,7 @@ APLO_JSC=/System/Library/Frameworks/JavaScriptCore.framework/Versions/A/Resource
 
 APLO_WINDOW_NAME="JavaScript Syntax Check"
 APLO_PARSER_PATH=$TM_BUNDLE_SUPPORT/bin/javaScriptSyntaxCheck
-# APLO_DELETE_FILE=1
+APLO_DELETE_FILE=1
 
 PATH=/usr/local/bin:$PATH
 
@@ -81,7 +81,6 @@ export APLO_JSLINT_OPTIONS APLO_JSLINT APLO_JSC_WRAPPER APLO_JSC APLO_WINDOW_NAM
 aploPath=/tmp/aplo-javascriptSyntaxCheck-$$.aplo
 
 env&gt;$aploPath
-echo $aploPath
 open -g $aploPath
 </string>
 	<key>input</key>

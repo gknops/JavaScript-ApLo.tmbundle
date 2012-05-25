@@ -2,6 +2,8 @@
 
 `JavaScript-ApLo.tmbundle` provides support for [JSLint](https://github.com/douglascrockford/JSLint). It requires [`ApLo.tmbundle`](https://github.com/gknops/aplo.tmbundle).
 
+![JavaScript Syntax Check](https://github.com/gknops/JavaScript-ApLo.tmbundle/raw/master/JavaScriptSyntaxCheck.png)
+
 By default it is tied to `callback.document.did-save` semantic class and the `source.js` scope, so it will check any JavaScript file on save.
 
 **NOTE**: this bundle does NOT replace the standard JavaScript bundle, you still need that for the language definition etc.
