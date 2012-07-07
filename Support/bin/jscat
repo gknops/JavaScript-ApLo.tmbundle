@@ -1,0 +1,49 @@
+#!/usr/bin/perl -w
+###############################################################################
+#	Copyright 2012 BITart Gerd Knops,  All rights reserved.
+#
+#	Project	: JavaScript-ApLo
+#	File	: jscat
+#	Author	: Gerd Knops gerti@BITart.com
+#
+###############################################################################
+#
+#	History:
+#	120707 Creation of file
+#
+###############################################################################
+#
+#	Description:
+#	Cat a file, if first line starts with '#!', insert '//' comment in front.
+#
+###############################################################################
+#
+# DISCLAIMER
+#
+# BITart and Gerd Knops make no warranties, representations or commitments
+# with regard to the contents of this software. BITart and Gerd Knops
+# specifically disclaim any and all warranties, whether express, implied or
+# statutory, including, but not limited to, any warranty of merchantability
+# or fitness for a particular purpose, and non-infringement. Under no
+# circumstances will BITart or Gerd Knops be liable for loss of data,
+# special, incidental or consequential damages out of the use of this
+# software, even if those damages were foreseeable, or BITart or Gerd Knops
+# was informed of their potential.
+#
+###############################################################################
+
+my $first=1;
+
+while(<>)
+{
+	if($first)
+	{
+		s/^#!/\/\/#!/;
+		$first=0;
+	}
+	
+	print;
+}
+
+1;
+############################################################################EOF

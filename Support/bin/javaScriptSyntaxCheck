@@ -66,7 +66,7 @@
 	
 	our $errCount=0;
 	
-	open(IN,"'$ENV{APLO_JSC}' '$ENV{APLO_JSLINT}' '$ENV{APLO_JSC_WRAPPER}' -- \"`cat '$path'`\" \"$opts\" 2>&1 |")
+	open(IN,"'$ENV{APLO_JSC}' '$ENV{APLO_JSLINT}' '$ENV{APLO_JSC_WRAPPER}' -- \"`\"$ENV{TM_BUNDLE_SUPPORT}/bin/jscat\" '$path'`\" \"$opts\" 2>&1 |")
 		or die("Can't open for read: $!\n");
 	while(<IN>)
 	{
