@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>beforeRunningCommand</key>
+	<string>saveActiveFile</string>
+	<key>command</key>
+	<string>#!/usr/bin/env bash
+[[ -f "${TM_SUPPORT_PATH}/lib/bash_init.sh" ]] &amp;&amp; . "${TM_SUPPORT_PATH}/lib/bash_init.sh"
+
+#
+# These are the JSHint boolean options:
+# 
+#    asi          // if automatic semicolon insertion should be tolerated
+#    bitwise      // if bitwise operators should not be allowed
+#    boss         // if advanced usage of assignments should be allowed
+#    browser      // if the standard browser globals should be predefined
+#    camelcase    // if identifiers should be required in camel case
+#    couch        // if CouchDB globals should be predefined
+#    curly        // if curly braces around all blocks should be required
+#    debug        // if debugger statements should be allowed
+#    devel        // if logging globals should be predefined (console,
+#                 // alert, etc.)
+#    dojo         // if Dojo Toolkit globals should be predefined
+#    eqeqeq       // if === should be required
+#    eqnull       // if == null comparisons should be tolerated
+#    es5          // if ES5 syntax should be allowed
+#    esnext       // if es.next specific syntax should be allowed
+#    evil         // if eval should be allowed
+#    expr         // if ExpressionStatement should be allowed as Programs
+#    forin        // if for in statements must filter
+#    funcscope    // if only function scope should be used for scope tests
+#    globalstrict // if global "use strict"; should be allowed (also
+#                 // enables 'strict')
+#    immed        // if immediate invocations must be wrapped in parens
+#    iterator     // if the `__iterator__` property should be allowed
+#    jquery       // if jQuery globals should be predefined
+#    lastsemic    // if semicolons may be ommitted for the trailing
+#                 // statements inside of a one-line blocks.
+#    latedef      // if the use before definition should not be tolerated
+#    laxbreak     // if line breaks should not be checked
+#    laxcomma     // if line breaks should not be checked around commas
+#    loopfunc     // if functions should be allowed to be defined within
+#                 // loops
+#    mootools     // if MooTools globals should be predefined
+#    multistr     // allow multiline strings
+#    newcap       // if constructor names must be capitalized
+#    noarg        // if arguments.caller and arguments.callee should be
+#                 // disallowed
+#    node         // if the Node.js environment globals should be
+#                 // predefined
+#    noempty      // if empty blocks should be disallowed
+#    nonew        // if using `new` for side-effects should be disallowed
+#    nonstandard  // if non-standard (but widely adopted) globals should
+#                 // be predefined
+#    nomen        // if names should be checked
+#    onevar       // if only one var statement per function should be
+#                 // allowed
+#    onecase      // if one case switch statements should be allowed
+#    passfail     // if the scan should stop on first error
+#    plusplus     // if increment/decrement should not be allowed
+#    proto        // if the `__proto__` property should be allowed
+#    prototypejs  // if Prototype and Scriptaculous globals should be
+#                 // predefined
+#    regexdash    // if unescaped first/last dash (-) inside brackets
+#                 // should be tolerated
+#    regexp       // if the . should not be allowed in regexp literals
+#    rhino        // if the Rhino environment globals should be predefined
+#    undef        // if variables should be declared before used
+#    scripturl    // if script-targeted URLs should be tolerated
+#    shadow       // if variable shadowing should be tolerated
+#    smarttabs    // if smarttabs should be tolerated
+#                 // (http://www.emacswiki.org/emacs/SmartTabs)
+#    strict       // require the "use strict"; pragma
+#    sub          // if all forms of subscript notation are tolerated
+#    supernew     // if `new function () { ... };` and `new Object;`
+#                 // should be tolerated
+#    trailing     // if trailing whitespace rules apply
+#    validthis    // if 'this' inside a non-constructor function is valid.
+#                 // This is a function scoped option only.
+#    withstmt     // if with statements should be allowed
+#    white        // if strict whitespace rules apply
+#    wsh          // if the Windows Scripting Host environment globals
+#                        // should be predefined
+# 
+# These are the JSHint options that can take any value
+# 
+#    maxlen
+#    indent
+#    maxerr
+#    predef
+#    quotmark
+#	
+APLO_JSHINT_DEFAULT_OPTIONS="bitwise: true, curly: true, eqeqeq: true, forin: true, immed: true, latedef: true, newcap: true, noarg: true, noempty: true, nonew: true, plusplus: true, regexp: true, undef: true, strict: true, trailing: true, asi: false, boss: false, debug: false, eqnull: false, es5: false, esnext: false, evil: false, expr: false, funcscope: false, globalstrict: false, iterator: false, lastsemic: false, laxbreak: false, laxcomma: false, loopfunc: false, multistr: false, onecase: false, proto: false, regexdash: false, scripturl: false, smarttabs: false, shadow: false, sub: false, supernew: false, validthis: false"
+
+APLO_JSHINT_OPTIONS=${APLO_JSHINT_OPTIONS:-"$APLO_JSHINT_DEFAULT_OPTIONS"}
+
+APLO_JSHINT=$TM_BUNDLE_SUPPORT/JSHint/jshint.js
+APLO_JSC_WRAPPER_JSHINT=$TM_BUNDLE_SUPPORT/lib/jsc_jshint_wrapper.js
+APLO_JSC=/System/Library/Frameworks/JavaScriptCore.framework/Versions/A/Resources/jsc
+
+APLO_WINDOW_NAME="JavaScript Syntax Check"
+APLO_PARSER_PATH=$TM_BUNDLE_SUPPORT/bin/javaScriptSyntaxCheckJSHint
+APLO_DELETE_FILE=1
+
+PATH=/usr/local/bin:$PATH
+
+export APLO_JSHINT_OPTIONS APLO_JSHINT APLO_JSC_WRAPPER_JSHINT APLO_JSC APLO_WINDOW_NAME APLO_PARSER_PATH APLO_DELETE_FILE
+
+aploPath=/tmp/aplo-javascriptSyntaxCheck-$$.aplo
+
+env&gt;$aploPath
+open -g $aploPath
+</string>
+	<key>input</key>
+	<string>none</string>
+	<key>inputFormat</key>
+	<string>text</string>
+	<key>name</key>
+	<string>SyntaxCheckJSHint</string>
+	<key>outputCaret</key>
+	<string>afterOutput</string>
+	<key>outputFormat</key>
+	<string>text</string>
+	<key>outputLocation</key>
+	<string>toolTip</string>
+	<key>scope</key>
+	<string>source.js</string>
+	<key>semanticClass</key>
+	<string>callback.document.did-save</string>
+	<key>uuid</key>
+	<string>8BCE9161-5CC3-4769-992D-F80A7B725534</string>
+	<key>version</key>
+	<integer>2</integer>
+</dict>
+</plist>

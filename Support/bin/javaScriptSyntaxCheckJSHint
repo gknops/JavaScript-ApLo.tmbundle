@@ -3,7 +3,7 @@
 #	Copyright 2012 BITart Gerd Knops,  All rights reserved.
 #
 #	Project	: TextMate JavaScript(ApLo) bundle
-#	File	: javaScriptSyntaxCheck
+#	File	: javaScriptSyntaxCheckJSHint
 #	Author	: Gerd Knops gerti@BITart.com
 #
 ###############################################################################
@@ -14,7 +14,7 @@
 ###############################################################################
 #
 #	Description:
-#	JavaScript Syntax Checker using APLO and JSLint
+#	JavaScript Syntax Checker using APLO and JSHint
 #
 ###############################################################################
 #
@@ -59,14 +59,14 @@
 	my $file=$safePath;
 	$file=~s/.*\///;
 	
-	printElement("Checking $file with JSLint",'headLine','div');
+	printElement("Checking $file with JSHint",'headLine','div');
 	
-	my $o=$ENV{APLO_JSLINT_OPTIONS} // '';
-	my $opts=qq[jsLintOptions={$o};\n];
+	my $o=$ENV{APLO_JSHINT_OPTIONS} // '';
+	my $opts=qq[jsHintOptions={$o};\n];
 	
 	our $errCount=0;
 	
-	open(IN,"'$ENV{APLO_JSC}' '$ENV{APLO_JSLINT}' '$ENV{APLO_JSC_WRAPPER}' -- \"`\"$ENV{TM_BUNDLE_SUPPORT}/bin/jscat\" '$path'`\" \"$opts\" 2>&1 |")
+	open(IN,"'$ENV{APLO_JSC}' '$ENV{APLO_JSHINT}' '$ENV{APLO_JSC_WRAPPER_JSHINT}' -- \"`\"$ENV{TM_BUNDLE_SUPPORT}/bin/jscat\" '$path'`\" \"$opts\" 2>&1 |")
 		or die("Can't open for read: $!\n");
 	while(<IN>)
 	{

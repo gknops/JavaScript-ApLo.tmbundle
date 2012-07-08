@@ -88,7 +88,7 @@ open -g $aploPath
 	<key>inputFormat</key>
 	<string>text</string>
 	<key>name</key>
-	<string>SyntaxCheck</string>
+	<string>SyntaxCheckJSLint</string>
 	<key>outputCaret</key>
 	<string>afterOutput</string>
 	<key>outputFormat</key>
@@ -97,8 +97,6 @@ open -g $aploPath
 	<string>toolTip</string>
 	<key>scope</key>
 	<string>source.js</string>
-	<key>semanticClass</key>
-	<string>callback.document.did-save</string>
 	<key>uuid</key>
 	<string>8C60C84F-CB22-419E-8797-8E5E01D887D7</string>
 	<key>version</key>
