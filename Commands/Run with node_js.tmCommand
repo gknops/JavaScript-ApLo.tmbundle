@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>beforeRunningCommand</key>
+	<string>saveModifiedFiles</string>
+	<key>command</key>
+	<string>#!/usr/bin/env bash
+[[ -f "${TM_SUPPORT_PATH}/lib/bash_init.sh" ]] &amp;&amp; . "${TM_SUPPORT_PATH}/lib/bash_init.sh"
+
+PATH=/usr/local/bin:$PATH
+
+APLO_NODEJS_SCRIPT=${APLO_NODEJS_SCRIPT:-"$TM_FILEPATH"}
+APLO_WINDOW_NAME=${APLO_WINDOW_NAME:-$(basename "$APLO_NODEJS_SCRIPT")}
+APLO_PARSER_PATH=$TM_BUNDLE_SUPPORT/bin/nodejsRun
+APLO_DELETE_FILE=1
+
+DPRINT_FULL_PATH=1
+
+export APLO_NODEJS_SCRIPT APLO_WINDOW_NAME APLO_PARSER_PATH APLO_DELETE_FILE DPRINT_FULL_PATH
+
+aploPath=/tmp/aplo$$.aplo
+
+env&gt;$aploPath
+echo $aploPath
+open $aploPath
+</string>
+	<key>input</key>
+	<string>none</string>
+	<key>inputFormat</key>
+	<string>text</string>
+	<key>keyEquivalent</key>
+	<string>@r</string>
+	<key>name</key>
+	<string>Run with node.js</string>
+	<key>outputCaret</key>
+	<string>afterOutput</string>
+	<key>outputFormat</key>
+	<string>text</string>
+	<key>outputLocation</key>
+	<string>toolTip</string>
+	<key>scope</key>
+	<string>source.js</string>
+	<key>uuid</key>
+	<string>3774CC53-EA57-48CB-B53D-67A297C72984</string>
+	<key>version</key>
+	<integer>2</integer>
+</dict>
+</plist>

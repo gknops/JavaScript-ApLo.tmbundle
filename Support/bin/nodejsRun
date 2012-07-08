@@ -1,0 +1,299 @@
+#!/usr/bin/perl -w
+###############################################################################
+#	Copyright 2012 BITart Gerd Knops,  All rights reserved.
+#
+#	Project	: TextMate Javascript bundle
+#	File	: nodejsRun
+#	Author	: Gerd Knops gerti@BITart.com
+#
+###############################################################################
+#
+#	History:
+#	120707 Creation of file
+#
+###############################################################################
+#
+#	Description:
+#	Run node.js script using APLO
+#
+###############################################################################
+#
+# DISCLAIMER
+#
+# BITart and Gerd Knops make no warranties, representations or commitments
+# with regard to the contents of this software. BITart and Gerd Knops
+# specifically disclaim any and all warranties, whether express, implied or
+# statutory, including, but not limited to, any warranty of merchantability
+# or fitness for a particular purpose, and non-infringement. Under no
+# circumstances will BITart or Gerd Knops be liable for loss of data,
+# special, incidental or consequential damages out of the use of this
+# software, even if those damages were foreseeable, or BITart or Gerd Knops
+# was informed of their potential.
+#
+###############################################################################
+# Configuration
+###############################################################################
+	
+	use strict;
+    use feature "switch";
+	
+	$|=1;
+	
+
+###############################################################################
+# Main
+###############################################################################
+	
+	if(scalar(@ARGV)==1)
+	{
+		given($ARGV[0])
+		{
+			when ('-js') { printJavascript(); exit(0); }
+			when ('-css') { printCSS(); exit(0); }
+		}
+	}
+	
+	
+	our $pwd=`pwd`;
+	
+	chomp($pwd);
+	# printElement("pwd: $pwd",'small');
+	
+	our $scriptPath=$ENV{APLO_NODEJS_SCRIPT} // $ENV{TM_FILEPATH};
+	
+	my $file=$scriptPath;
+	$file=~s/.*\///;
+	
+	printElement("Running $file",'headLine','div');
+	
+	chdir($ENV{'TM_DIRECTORY'});
+	
+	open(IN,"node '$scriptPath' 2>&1 |") or die("Can't open 'node '$scriptPath' 2>&1 |' for read: $!\n");
+	while(<IN>)
+	{
+		# printElement(htmlEscape($_),'small');
+		
+		if(/^\s+at\s+\S+\s+\((.+):(\d+):(\d+)\)/
+		|| /^\s+at\s+(.+):(\d+):(\d+)/
+		|| /(.+):(\d+)$/
+		)
+		{
+			my $path=$1;
+			my $line=$2;
+			my $col=$3 // 0;
+			my $txt=htmlEscape($_);
+			
+			my $file=$path;
+			$file=~s/.*\///;
+			
+			my $s=qq{<a href="txmt://open?url=file://$path&line=$line&column=$col">$file:$line:</a> $txt};
+			
+			printElement($s);
+		}
+		# elsif(s/^\@([^:]+):(\d+)://)
+		# {
+		# 	my $path=$1;
+		# 	my $line=$2;
+		# 	my $txt=htmlEscape($_);
+		# 	
+		# 	$path=fixUpPath($path,$scriptPath,$pwd);
+		# 	
+		# 	$path=~s/^\./$pwd/;
+		# 	
+		# 	my $file=$path;
+		# 	$file=~s/.*\///;
+		# 	
+		# 	my $s=qq{<a href="txmt://open?url=file://$path&line=$line">$file:$line:</a> $txt};
+		# 	
+		# 	printElement($s);
+		# }
+		# elsif(s/.*lua:\s+([^\:]+):(\d+)://)
+		# {
+		# 	my $path=$1;
+		# 	my $line=$2;
+		# 	my $txt=htmlEscape($_);
+		# 	
+		# 	$path=fixUpPath($path,$scriptPath,$pwd);
+		# 	
+		# 	my $file=$path;
+		# 	$file=~s/.*\///;
+		# 	
+		# 	my $s=qq{<a href="txmt://open?url=file://$path&line=$line">$file:$line:</a> <span class="error">$txt</span>};
+		# 	
+		# 	printElement($s);
+		# }
+		# elsif(s/^(\s+)([^\:]+):(\d+)://)
+		# {
+		# 	my $space=$1;
+		# 	my $path=$2;
+		# 	my $line=$3;
+		# 	my $txt=htmlEscape($_);
+		# 	
+		# 	$space=~s/\t/    /g;
+		# 	$space=~s/ /&nbsp;/g;
+		# 	
+		# 	$path=fixUpPath($path,$scriptPath,$pwd);
+		# 	
+		# 	my $file=$path;
+		# 	$file=~s/.*\///;
+		# 	
+		# 	my $s=qq{$space<a href="txmt://open?url=file://$path&line=$line">$file:$line:</a> <span class="error">$txt</span>};
+		# 	
+		# 	printElement($s);
+		# }
+		else
+		{
+			my $classes='';
+			
+			if(/^\S*(Error|Warning)/)
+			{
+				$classes=lc($1);
+			}
+			
+			my $space='';
+			
+			if($_=~s/^(\s+)//)
+			{
+				$space=$1;
+				$space=~s/\t/    /g;
+				$space=~s/ /&nbsp;/g;
+			}
+			
+			printElement($space.htmlEscape($_),$classes);
+		}
+	}
+	my $ok=close(IN);
+	
+	printElement('');
+	
+	unless($ok)
+	{
+		my $exitValue=$?>>8;
+		printElement("Script terminated with exit code $exitValue",'errorResult');
+		playSound($ENV{TM_ERROR_SOUND});
+		exit(1);
+	}
+	
+	printElement('Script terminated','okResult');
+	playSound($ENV{TM_SUCCESS_SOUND});
+	
+
+###############################################################################
+# Subroutines
+###############################################################################
+sub printElement {
+	
+	my $span=shift;
+	my $classes=shift // '';
+	my $element=shift // 'span';
+	
+	$classes=qq{ class="$classes"} if($classes ne '');
+	
+	print qq{<$element$classes>$span</$element><br />\n};
+}
+sub fixUpPath {
+	
+	my $filePath=shift;
+	my $path=shift;
+	my $pwd=shift;
+	
+	return $filePath if($filePath=~s/^\.\//$pwd/);
+	return $filePath unless($filePath=~s/^\.\.\.//);
+	
+	my $p=$filePath;
+	my $index=-1;
+	
+	while(($index=index($path,$p))<0)
+	{
+		$p=~s/.$//;
+		
+		last if($p eq '');
+	}
+	
+	return "...$filePath" if($index<0);
+	
+	$filePath=substr($path,0,$index).$filePath;
+	
+	$filePath;
+}
+
+###############################################################################
+# Utility functions
+###############################################################################
+sub playSound {
+	
+	my $sf=shift;
+	
+	return unless($sf);
+	
+	unless(index($sf,'/')==0)
+	{
+		$sf="/System/Library/Sounds/$sf.aiff";
+	}
+	
+	if(-r $sf)
+	{
+		system("/usr/bin/afplay '$sf' 2>/dev/null");
+	}
+	else
+	{
+		warn("playSound: '$sf' not found!<br />\n");
+	}
+}
+sub percentEscape {
+	
+	my $s=shift;
+	
+	# $s=~s/([^a-zA-Z0-9_\-.\/])/uc sprintf("%%%02x",ord($1))/eg;
+	$s=~s/(\s|[]\!\*\'\(\)\;\:\@\&\=\+\$\,\?\#\[\]])/uc sprintf("%%%02x",ord($1))/eg;
+	
+	$s;
+}
+sub htmlEscape {
+	
+	my $s=shift;
+	
+	$s=~s/</\&lt;/g;
+	$s=~s/>/\&gt;/g;
+	
+	$s;
+}
+
+###############################################################################
+# Javascript & CSS
+###############################################################################
+sub printJavascript {
+	
+	print <<'JAVASCRIPT';
+JAVASCRIPT
+}
+sub printCSS {
+	
+	print <<'CSS';
+.headLine {
+	font-family: Helvetica;
+    font-size: 130%;
+    font-weight: bold;
+	padding-bottom: 5px;
+	border-bottom: 1px solid black;
+}
+.warning {
+	color: GoldenRod;
+}
+.error {
+	color: FireBrick;
+}
+.okResult {
+	color: green;
+}
+.errorResult {
+	color: red;
+}
+.small {
+	font-size: 80%;
+}
+CSS
+};
+
+1;
+############################################################################EOF
