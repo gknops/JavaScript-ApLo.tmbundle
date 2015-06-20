@@ -35,7 +35,6 @@
 ###############################################################################
 	
 	use strict;
-    use feature "switch";
 	
 	$|=1;
 	
@@ -46,10 +45,15 @@
 	
 	if(scalar(@ARGV)==1)
 	{
-		given($ARGV[0])
+		if($ARGV[0] eq '-js')
 		{
-			when ('-js') { printJavascript(); exit(0); }
-			when ('-css') { printCSS(); exit(0); }
+			printJavascript();
+			exit(0);
+		}
+		elsif($ARGV[0] eq '-css')
+		{
+			printCSS();
+			exit(0);
 		}
 	}
 	
